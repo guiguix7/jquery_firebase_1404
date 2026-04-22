@@ -4,19 +4,11 @@ $("#salvar").click(function () {
     let nome = $("#nome").val();
     let email = $("#email").val();
     let cnpj = $("#CNPJ").val();
-    let estado = $("#estado").val();
+    let estado = $("input[name='estado']:checked").val();
 
     if (nome === "" || email === "" || cnpj === "" || estado === "") {
         alert("Preencha todos os campos!");
         return;
-    }
-
-    if (estado === "sp") {
-        estado = "São Paulo";
-    } else if (estado === "rj") {
-        estado = "Rio de Janeiro";
-    } else if (estado === "mg") {
-        estado = "Minas Gerais";
     }
 
     ref.push({
@@ -30,7 +22,7 @@ $("#salvar").click(function () {
         $("#nome").val("");
         $("#email").val("");
         $("#CNPJ").val("");
-        $("#estado").val("");
+        $("input[name='estado']").prop("checked", false);
     }
     limpar();
     alert("Fornecedor salvo com sucesso!");
