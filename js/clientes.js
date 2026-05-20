@@ -1,6 +1,18 @@
 // Banco de dados
 const ref = db.ref("clientes");
 
+let idcapturado = null
+
+$("#cancelar").hide()
+
+$("#cancelar").click(function () {
+    limpar();
+    idcapturado = null;
+    $("#salvar").text("Salvar").removeClass("btn-success").addClass("btn-primary");
+    $("#cancelar").hide();
+    $("#status").text("");
+})
+
 $("#salvar").click(function () {
     let nome = $("#nome").val().toUpperCase();
     let email = $("#email").val().toLowerCase();
@@ -10,18 +22,34 @@ $("#salvar").click(function () {
         return;
     }
 
-    ref.push({
-        nome: nome,
-        type: "cliente",
-        email: email
-    });
+    if (idcapturado) {//Salvar
+        ref.child(idcapturado).update({ nome, email })
+        idcapturado = null
+        $("#salvar").text("Salvar")
 
-    // Tabela no site
+        $("#cancelar").hide()
 
-    ref.on("value", dados_tabela => {
-        $("#lista").empty();
+        $("#salvar").removeClass("btn-success").addClass("btn-primary")
 
-        $("#lista").append(`
+        $("#status").text("")
+
+    } else {//Editar
+        ref.push({
+            nome: nome,
+            email: email,
+            type: "cliente"
+        });
+        alert('Cliente Cadastrado com Sucesso!')
+    }
+    limpar()
+})
+
+// Tabela no site
+
+ref.on("value", dados_tabela => {
+    $("#lista").empty();
+
+    $("#lista").append(`
         <tr>
             <th>ID</th>
             <th>Nome</th>
@@ -29,36 +57,53 @@ $("#salvar").click(function () {
             <th colspan="2">Opções</th>
         </tr>`)
 
-        dados_tabela.forEach(registro => {
-            let reg = registro.val();
-            let id = registro.key;
+    dados_tabela.forEach(registro => {
+        let reg = registro.val();
+        let id = registro.key;
 
-            $("#lista").append(`
+        $("#lista").append(`
             <tr>
                 <td>${id}</td>
                 <td>${reg.nome}</td>
                 <td>${reg.email}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm">
+                    <button class="btn btn-danger btn-sm" onclick="deletar('${id}')">
                         <i class="bi-trash"></i>
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-warning btn-sm">
+                    <button class="btn btn-warning btn-sm" onclick="editar('${id}', '${reg.nome}', '${reg.email}')">
                         <i class="bi bi-pencil"></i>
                     </button>
                 </td>
             </tr>
         `);
-        });
     });
+});
 
-    // Limpar os campos
+// Limpar os campos
 
-    function limpar() {
-        $("#nome").val("");
-        $("#email").val("");
+function limpar() {
+    $("#nome").val("");
+    $("#email").val("");
+}
+
+function editar(id, nome, email) {
+    $('#nome').val(nome)
+    $('#email').val(email)
+
+    idcapturado = id
+
+    $('#salvar').text('Atualizar').removeClass('btn-primary').addClass('btn-success')
+
+    $("#cancelar").show()
+
+    $("#status").text("Editando registro...")
+}
+
+function deletar(id) {
+    if (confirm("Tem certeza que deseja deletar este cliente?")) {
+        ref.child(id).remove();
+        alert("Cliente deletado com sucesso!");
     }
-    alert('Cliente Cadastrado com Sucesso!')
-    limpar()
-})
+}

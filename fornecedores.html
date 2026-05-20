@@ -41,8 +41,8 @@
 
     <div class="container mt-4">
         <h3>Fornecedores</h3>
-        <input id="nome" class="form-control mb-2" placeholder="Nome">
-        <input id="email" class="form-control mb-2" placeholder="Email">
+        <input id="nome" class="form-control mb-2" placeholder="Nome" type="text">
+        <input id="email" class="form-control mb-2" placeholder="Email" type="email">
         <input type="number" name="" id="CNPJ" class="form-control mb-2" placeholder="CNPJ">
         <div class="mb-3">
             <div class="form-check form-check-inline">
@@ -59,6 +59,8 @@
             </div>
         </div>
         <button id="salvar" class="btn btn-primary">Salvar</button>
+        <button id="cancelar" class="btn btn-secondary">Cancelar</button>
+        <small id="status" class="teste-muted"></small>
         <table class="table mt-3 table-bordered table-striped table-hover table-sm">
             <tbody id="lista"></tbody>
         </table>
