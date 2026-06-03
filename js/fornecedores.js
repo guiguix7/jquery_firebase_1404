@@ -120,3 +120,10 @@ function deletar(id) {
         alert("Fornecedor deletado com sucesso!");
     }
 }
+function cancelar() {
+    limpar();
+    idcapturado = null;
+    $("#salvar").text("Salvar").removeClass("btn-success").addClass("btn-primary");
+    $("#cancelar").hide();
+    $("#status").text("");
+}

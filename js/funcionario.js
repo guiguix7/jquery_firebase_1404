@@ -79,14 +79,30 @@ ref.on("value", dados_tabela => {
     });
 });
 
-function editar(id, nome, email, cargo) {
+function editar(id, nome, email) {
     $('#nome').val(nome)
     $('#email').val(email)
-    $('#cargo').val(cargo)
 
     idcapturado = id
 
     $('#salvar').text('Atualizar').removeClass('btn-primary').addClass('btn-success')
+
     $("#cancelar").show()
+
     $("#status").text("Editando registro...")
+}
+
+function deletar(id) {
+    if (confirm("Tem certeza que deseja deletar este cliente?")) {
+        ref.child(id).remove();
+        alert("Cliente deletado com sucesso!");
+    }
+}
+
+function cancelar() {
+    limpar();
+    idcapturado = null;
+    $("#salvar").text("Salvar").removeClass("btn-success").addClass("btn-primary");
+    $("#cancelar").hide();
+    $("#status").text("");
 }

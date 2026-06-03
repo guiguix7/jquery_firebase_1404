@@ -79,9 +79,9 @@ ref.on("value", dados_tabela => {
     });
 });
 
-function editar(id, nome, info) {
+function editar(id, nome, email) {
     $('#nome').val(nome)
-    $('#info').val(info)
+    $('#email').val(email)
 
     idcapturado = id
 
@@ -90,4 +90,19 @@ function editar(id, nome, info) {
     $("#cancelar").show()
 
     $("#status").text("Editando registro...")
+}
+
+function deletar(id) {
+    if (confirm("Tem certeza que deseja deletar este cliente?")) {
+        ref.child(id).remove();
+        alert("Cliente deletado com sucesso!");
+    }
+}
+
+function cancelar() {
+    limpar();
+    idcapturado = null;
+    $("#salvar").text("Salvar").removeClass("btn-success").addClass("btn-primary");
+    $("#cancelar").hide();
+    $("#status").text("");
 }

@@ -22,7 +22,7 @@ $("#salvar").click(function () {
         return;
     }
 
-    if (idcapturado) {//Salvar
+    if (idcapturado) {
         ref.child(idcapturado).update({ nome, email })
         idcapturado = null
         $("#salvar").text("Salvar")
@@ -32,8 +32,9 @@ $("#salvar").click(function () {
         $("#salvar").removeClass("btn-success").addClass("btn-primary")
 
         $("#status").text("")
+        alert('Cliente Atualizado com Sucesso!')
 
-    } else {//Editar
+    } else {
         ref.push({
             nome: nome,
             email: email,
@@ -106,4 +107,12 @@ function deletar(id) {
         ref.child(id).remove();
         alert("Cliente deletado com sucesso!");
     }
+}
+
+function cancelar() {
+    limpar();
+    idcapturado = null;
+    $("#salvar").text("Salvar").removeClass("btn-success").addClass("btn-primary");
+    $("#cancelar").hide();
+    $("#status").text("");
 }
