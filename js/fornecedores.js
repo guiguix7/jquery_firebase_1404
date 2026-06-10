@@ -86,9 +86,9 @@ function editar(id, nome, salario, cargo) {
 }
 
 function deletar(id) {
-    if (confirm("Tem certeza que deseja deletar este fornecedor?")) {
+    if (confirm("Tem certeza que deseja deletar este vendedor?")) {
         ref.child(id).remove();
-        alert("Fornecedor deletado com sucesso!");
+        alert("Vendedor deletado com sucesso!");
     }
 }
 function cancelar() {
