@@ -16,8 +16,9 @@ $("#cancelar").click(function () {
 $("#salvar").click(function () {
     let nome = $("#nome").val().trim().toUpperCase();
     let email = $("#email").val().trim().toLowerCase();
+    let telefone = $("#telefone").val().trim().replace(/\D/g, "");
 
-    if (nome === "" || email === "") {
+    if (nome === "" || email === "" || telefone === "") {
         alert("Preencha todos os campos!");
         return;
     }
@@ -27,8 +28,13 @@ $("#salvar").click(function () {
         return;
     }
 
+    if (!/^\d+$/.test(telefone)) {
+        alert("O telefone deve conter apenas números!");
+        return;
+    }
+
     if (idcapturado) {
-        ref.child(idcapturado).update({ nome, email, type: "cliente" });
+        ref.child(idcapturado).update({ nome, email, telefone, type: "cliente" });
         idcapturado = null
         $("#salvar").text("Salvar")
 
@@ -43,6 +49,7 @@ $("#salvar").click(function () {
         ref.push({
             nome: nome,
             email: email,
+            telefone: telefone,
             type: "cliente"
         });
         alert('Cliente Cadastrado com Sucesso!')
@@ -60,6 +67,7 @@ ref.on("value", dados_tabela => {
             <th>ID</th>
             <th>Nome</th>
             <th>Email</th>
+            <th>Telefone</th>
             <th colspan="2">Opções</th>
         </tr>`)
 
@@ -72,13 +80,14 @@ ref.on("value", dados_tabela => {
                 <td>${id}</td>
                 <td>${reg.nome}</td>
                 <td>${reg.email}</td>
+                <td>${reg.telefone || "-"}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletar('${id}')">
                         <i class="bi-trash"></i>
                     </button>
                 </td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="editar('${id}', '${reg.nome}', '${reg.email}')">
+                    <button class="btn btn-warning btn-sm" onclick="editar('${id}', '${reg.nome}', '${reg.email}', '${reg.telefone || ""}')">
                         <i class="bi bi-pencil"></i>
                     </button>
                 </td>
@@ -92,11 +101,13 @@ ref.on("value", dados_tabela => {
 function limpar() {
     $("#nome").val("");
     $("#email").val("");
+    $("#telefone").val("");
 }
 
 function editar(id, nome, email, telefone) {
     $('#nome').val(nome)
     $('#email').val(email)
+    $('#telefone').val(telefone)
     idcapturado = id
 
     $('#salvar').text('Atualizar').removeClass('btn-primary').addClass('btn-success')

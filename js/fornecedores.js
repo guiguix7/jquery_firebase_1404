@@ -7,9 +7,8 @@ $("#cancelar").hide();
 
 function limpar() {
     $("#nome").val("");
-    $("#email").val("");
-    $("#CNPJ").val("");
-    $("input[name='estado']").prop("checked", false);
+    $("#salario").val("");
+    $("#cargo").val("");
 }
 
 $("#cancelar").click(function () {
@@ -22,25 +21,19 @@ $("#cancelar").click(function () {
 
 $("#salvar").click(function () {
     let nome = $("#nome").val().trim().toUpperCase();
-    let email = $("#email").val().trim().toLowerCase();
-    let cnpj = $("#CNPJ").val().trim();
-    let estado = $("input[name='estado']:checked").val();
+    let salario = parseFloat($("#salario").val());
+    let cargo = $("#cargo").val().trim();
 
-    if (nome === "" || email === "" || cnpj === "" || !estado) {
-        alert("Preencha todos os campos corretamente!");
-        return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert("Informe um email válido!");
+    if (nome === "" || isNaN(salario) || salario < 0 || cargo === "") {
+        alert("Preencha nome, salário e cargo corretamente!");
         return;
     }
 
     if (idcapturado) {
-        ref.child(idcapturado).update({ nome, email, cnpj, estado, type: "vendedor" });
+        ref.child(idcapturado).update({ nome, salario, cargo, type: "vendedor" });
         alert("Vendedor atualizado com sucesso!");
     } else {
-        ref.push({ nome, email, cnpj, estado, type: "vendedor" });
+        ref.push({ nome, salario, cargo, type: "vendedor" });
         alert("Vendedor salvo com sucesso!");
     }
 
@@ -59,9 +52,8 @@ ref.on("value", dados_tabela => {
     <tr>
         <th>ID</th>
         <th>Nome</th>
-        <th>Email</th>
-        <th>CNPJ</th>
-        <th>Estado</th>
+        <th>Salário</th>
+        <th>Cargo</th>
         <th colspan="2">Opções</th>
     </tr>`);
 
@@ -73,25 +65,18 @@ ref.on("value", dados_tabela => {
         <tr>
             <td>${id}</td>
             <td>${reg.nome || ""}</td>
-            <td>${reg.email || ""}</td>
-            <td>${reg.cnpj || ""}</td>
-            <td>${(reg.estado || "").toUpperCase()}</td>
+            <td>R$ ${Number(reg.salario || 0).toFixed(2)}</td>
+            <td>${reg.cargo || ""}</td>
             <td><button class="btn btn-danger btn-sm" onclick="deletar('${id}')"><i class="bi-trash"></i></button></td>
-            <td><button class="btn btn-warning btn-sm" onclick="editar('${id}', '${reg.nome || ""}', '${reg.email || ""}', '${reg.cnpj || ""}', '${reg.estado || ""}')"><i class="bi bi-pencil"></i></button></td>
+            <td><button class="btn btn-warning btn-sm" onclick="editar('${id}', '${reg.nome || ""}', '${reg.salario || ""}', '${reg.cargo || ""}')"><i class="bi bi-pencil"></i></button></td>
         </tr>`);
     });
 });
 
-function editar(id, nome, email, cnpj, estado) {
+function editar(id, nome, salario, cargo) {
     $('#nome').val(nome);
-    $('#email').val(email);
-    $('#CNPJ').val(cnpj);
-
-    if (estado) {
-        $("input[name='estado'][value='" + estado.toLowerCase() + "']").prop("checked", true);
-    } else {
-        $("input[name='estado']").prop("checked", false);
-    }
+    $('#salario').val(salario);
+    $('#cargo').val(cargo);
 
     idcapturado = id;
 

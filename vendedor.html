@@ -44,29 +44,20 @@
 
     <div class="container mt-4">
         <h3 style="font-weight: bold;" class="text-dark">Vendedor</h3>
-        <input id="nome" class="form-control mb-2" placeholder="Nome" type="text"
+        <label for="nome" class="form-label fw-semibold">Nome</label>
+        <input id="nome" class="form-control mb-2" placeholder="Nome do vendedor" type="text"
             style="background-color: #fff; border-color:#2b045f; font-weight: bold;">
-        <input id="email" class="form-control mb-2" placeholder="Email" type="email"
+        <label for="salario" class="form-label fw-semibold">Salário</label>
+        <input id="salario" class="form-control mb-2" placeholder="Ex.: 2500.50" type="number" step="0.01" min="0"
             style="background-color: #fff; border-color:#2b045f; font-weight: bold;">
-        <input type="number" name="" id="CNPJ" class="form-control mb-2" placeholder="CNPJ"
+        <label for="cargo" class="form-label fw-semibold">Cargo</label>
+        <select id="cargo" class="form-select mb-2"
             style="background-color: #fff; border-color:#2b045f; font-weight: bold;">
-        <div class="mb-3">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="estado" id="estado-sp" value="sp">
-                <label class="form-check-label" for="estado-sp" style="color: black; font-weight: bold;">São
-                    Paulo</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="estado" id="estado-rj" value="rj">
-                <label class="form-check-label" for="estado-rj" style="color: black; font-weight: bold;">Rio de
-                    Janeiro</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="estado" id="estado-mg" value="mg">
-                <label class="form-check-label" for="estado-mg" style="color: black; font-weight: bold;">Minas
-                    Gerais</label>
-            </div>
-        </div>
+            <option value="">Selecione o cargo </option>
+            <option value="Vendedor">Vendedor</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Gerente">Gerente</option>
+        </select>
         <button id="salvar" class="btn btn-primary">Salvar</button>
         <button id="cancelar" class="btn btn-secondary">Cancelar</button>
         <small id="status" class="teste-muted"></small>
