@@ -79,9 +79,10 @@ ref.on("value", dados_tabela => {
     });
 });
 
-function editar(id, nome, email) {
+function editar(id, nome, email, cargo) {
     $('#nome').val(nome)
     $('#email').val(email)
+    $('#cargo').val(cargo)
 
     idcapturado = id
 
@@ -93,9 +94,9 @@ function editar(id, nome, email) {
 }
 
 function deletar(id) {
-    if (confirm("Tem certeza que deseja deletar este cliente?")) {
+    if (confirm("Tem certeza que deseja deletar este funcionário?")) {
         ref.child(id).remove();
-        alert("Cliente deletado com sucesso!");
+        alert("Funcionário deletado com sucesso!");
     }
 }
 

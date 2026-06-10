@@ -14,16 +14,21 @@ $("#cancelar").click(function () {
 })
 
 $("#salvar").click(function () {
-    let nome = $("#nome").val().toUpperCase();
-    let email = $("#email").val().toLowerCase();
+    let nome = $("#nome").val().trim().toUpperCase();
+    let email = $("#email").val().trim().toLowerCase();
 
     if (nome === "" || email === "") {
         alert("Preencha todos os campos!");
         return;
     }
 
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Informe um email válido!");
+        return;
+    }
+
     if (idcapturado) {
-        ref.child(idcapturado).update({ nome, email })
+        ref.child(idcapturado).update({ nome, email, type: "cliente" });
         idcapturado = null
         $("#salvar").text("Salvar")
 
@@ -89,10 +94,9 @@ function limpar() {
     $("#email").val("");
 }
 
-function editar(id, nome, email) {
+function editar(id, nome, email, telefone) {
     $('#nome').val(nome)
     $('#email').val(email)
-
     idcapturado = id
 
     $('#salvar').text('Atualizar').removeClass('btn-primary').addClass('btn-success')
